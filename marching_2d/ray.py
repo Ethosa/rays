@@ -14,6 +14,9 @@ class Ray:
         self.max_steps = 1000
 
     def go(self, step):
+        """
+        Goes in specific direction
+        """
         self.position = (self.position[0] + self.direction[0]*step, self.position[1] + self.direction[1]*step)
 
     def calculate(self):
