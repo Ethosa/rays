@@ -9,6 +9,10 @@ TAU = pi*2
 
 class Marcher2D:
     def __init__(self, size=(480, 240), background_color=(33, 33, 33)):
+        """
+        size is image size
+        background_color is an image background color
+        """
         self.screen = Image.new('RGBA', size, background_color)
         self.draw = ImageDraw.Draw(self.screen)
         self.objects = [
@@ -20,6 +24,9 @@ class Marcher2D:
         self.fov = 360  # viewing angle
 
     def cast(self, position=(240, 120), angle=90):
+        """
+        Cast rays from `point` with specific `angle`
+        """
         for current_angle in range(self.fov):
             a = TAU*(((current_angle - self.fov/2) - angle)/360)
             ray = Ray(position, a, self.objects)
