@@ -4,6 +4,12 @@ class ObjType:
 
 class Obj:
     def __init__(self, objtype=ObjType.CIRCLE, position=(0, 0), radius=32):
+        """
+        Creates a new Object
+        objtype can be `ObjType.CIRCLE` only.
+        position is an object position.
+        radius uses for circle
+        """
         self.objtype = objtype
         self.position = position
 
