@@ -11,7 +11,7 @@ class Ray:
         self.objs = objs
         self.min_length = v
         self.direction = (cos(angle), sin(angle))
-        self.max_steps = 500
+        self.max_steps = 750
 
     def go(self, step):
         """

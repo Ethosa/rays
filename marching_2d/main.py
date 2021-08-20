@@ -29,13 +29,13 @@ class Marcher2D:
         """
         for current_angle in range(self.fov):
             a = TAU*(((current_angle - self.fov/2) - angle)/360)
-            ray = Ray(position, a, self.objects)
+            ray = Ray(eye, a, self.objects)
             ray.calculate()
-            self.draw.line((position, ray.positions[-1]), (222, 222, 222))
+            self.draw.line((eye, ray.positions[-1]), (222, 222, 222))
 
         self.screen.show()
 
 
 if __name__ == '__main__':
     marcher = Marcher2D(size=(1280, 720))
-    marcher.cast(position=(640, 380))
+    marcher.cast(eye=(640, 380))
