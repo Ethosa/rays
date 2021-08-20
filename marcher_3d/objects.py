@@ -7,16 +7,16 @@ class ObjType:
 
 
 class Obj:
-    def sphere(position=(0, 0, 0), radius=32.0):
+    def sphere(point=(0, 0, 0), radius=32.0):
         obj = Obj()
         obj.objtype = ObjType.SPHERE
-        obj.position = position
+        obj.point = point
         obj.radius = radius
         return obj
 
     def is_collide(self, point):
         if self.objtype == ObjType.SPHERE:
-            return Obj._distance(self.position, point) < self.radius
+            return Obj._distance(self.point, point) < self.radius
 
     def _direction(pnt1, pnt2):
         result = Obj._normalize((pnt1[0] - pnt2[0], pnt1[1] - pnt2[1], pnt1[1] - pnt2[1]))
