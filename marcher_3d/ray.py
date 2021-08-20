@@ -10,9 +10,15 @@ class Ray:
         self.point = point
         self.max_steps = 25
 
+    def _add_points(pnt1, pnt2):
+        return (pnt1[0] + pnt2[0], pnt1[1] + pnt2[1], pnt1[1] + pnt2[1])
+
+    def _add_num_to_point(pnt, num):
+        return (pnt1[0] + num, pnt1[1] + num, pnt1[1] + num)
+
     def _get_valide_length(self, obj):
         length = self.spd
-        while obj.is_collide(self.point + self.direction*length) or length > 0.1:
+        while obj.is_collide(Ray._add_num_to_point(Ray._add_points(self.point,self.direction))) or length > 0.1:
             length /= 2.0
         return length
 
