@@ -7,17 +7,17 @@ v = 2**16
 
 class Ray:
     def __init__(self, pos, angle, objs):
-        self.position = pos
+        self.positions = [pos]
         self.objs = objs
         self.min_length = v
         self.direction = (cos(angle), sin(angle))
-        self.max_steps = 1000
+        self.max_steps = 500
 
     def go(self, step):
         """
         Goes in specific direction
         """
-        self.position = (self.position[0] + self.direction[0]*step, self.position[1] + self.direction[1]*step)
+        self.positions.append((self.positions[-1][0] + self.direction[0]*step, self.positions[-1][1] + self.direction[1]*step))
 
     def calculate(self):
         step = 0
@@ -45,5 +45,5 @@ class Ray:
         is_collide is True when a ray collides with the object.
         """
         if obj.objtype == ObjType.CIRCLE:
-            length = sqrt((obj.position[0]-self.position[0])**2 + (obj.position[1]-self.position[1])**2)
+            length = sqrt((obj.position[0]-self.positions[-1][0])**2 + (obj.position[1]-self.positions[-1][1])**2)
             return length, length <= obj.radius

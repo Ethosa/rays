@@ -21,17 +21,17 @@ class Marcher2D:
             Obj(position=(1024, 0), radius=128),
             Obj(position=(512, 128), radius=4)
         ]
-        self.fov = 360  # viewing angle
+        self.fov = 120  # viewing angle
 
-    def cast(self, position=(240, 120), angle=90):
+    def cast(self, eye=(240, 120), angle=90):
         """
-        Cast rays from `point` with specific `angle`
+        Cast rays from `eye` position with specific `angle`
         """
         for current_angle in range(self.fov):
             a = TAU*(((current_angle - self.fov/2) - angle)/360)
             ray = Ray(position, a, self.objects)
             ray.calculate()
-            self.draw.line((position, ray.position), (222, 222, 222))
+            self.draw.line((position, ray.positions[-1]), (222, 222, 222))
 
         self.screen.show()
 
