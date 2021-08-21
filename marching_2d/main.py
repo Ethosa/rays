@@ -16,26 +16,26 @@ class Marcher2D:
         self.screen = Image.new('RGBA', size, background_color)
         self.draw = ImageDraw.Draw(self.screen)
         self.objects = [
-            Obj(position=(640, 256), radius=8),
-            Obj(position=(640, 64), radius=64),
-            Obj(position=(1024, 0), radius=128),
-            Obj(position=(512, 128), radius=4)
+            Obj.circle((640, 256), 8),
+            Obj.circle((640, 64), 64),
+            Obj.circle((1024, 0), 128),
+            Obj.circle((512, 128), 4)
         ]
         self.fov = 120  # viewing angle
 
-    def cast(self, eye=(240, 120), angle=90):
+    def look_at(self, camera=(240, 120), angle=90):
         """
-        Cast rays from `eye` position with specific `angle`
+        Get look from `camera` point with specific `angle`.
         """
         for current_angle in range(self.fov):
             a = TAU*(((current_angle - self.fov/2) - angle)/360)
-            ray = Ray(eye, a, self.objects)
+            ray = Ray(camera, a, self.objects)
             ray.calculate()
-            self.draw.line((eye, ray.positions[-1]), (222, 222, 222))
+            self.draw.line((camera, ray.point), (222, 222, 222))
 
         self.screen.show()
 
 
 if __name__ == '__main__':
     marcher = Marcher2D(size=(1280, 720))
-    marcher.cast(eye=(640, 380))
+    marcher.look_at(camera=(640, 380))
