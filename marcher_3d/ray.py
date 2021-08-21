@@ -3,14 +3,17 @@ from objects import ObjType, Obj
 
 
 class Ray:
-    def __init__(self, point=(0, 0, 0), direction=(0, 0, 0), spd=1.0, objects=[], max_steps=25):
+    def __init__(self, point=(0, 0, 0), direction=(0, 0, 0), spd=1.0, objects=[], max_steps=25, light_direction=(0, 0, 0)):
         self.objects = objects
         self.spd = spd
         self.direction = direction
         self.point = point
         self.max_steps = 25
-        self.collided_obj = None
+        self.shade_color = (0, 0, 0, 0)
+        self.bright_color = (255, 255, 255, 0)
         self.is_collided = False
+        self.collided_obj = None
+        self.light_direction = light_direction
 
     def _add_points(pnt1, pnt2):
         return (pnt1[0] + pnt2[0], pnt1[1] + pnt2[1], pnt1[1] + pnt2[1])
@@ -31,9 +34,15 @@ class Ray:
             for obj in self.objects:
                 if obj.is_collide(self.point):
                     spd = self._get_valide_length(obj)
+                    self.color = obj.albedo_color
                     self.collided_obj = obj
             if spd < self.spd:
                 self.is_collided = True
                 break
 
             self.point = (self.point[0] + self.direction[0]*spd, self.point[1] + self.direction[1]*spd, self.point[2] + self.direction[2]*spd)
+        if self.collided_obj:
+            alpha = round((Obj._distance(self.light_direction, self.direction)*0.65)*255)
+            self.shade_color = (0, 0, 0, alpha)
+            alpha = round((0.5-Obj._distance(self.light_direction, self.direction))*255)
+            self.bright_color = (255, 255, 255, round(alpha*0.2))
