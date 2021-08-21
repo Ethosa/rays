@@ -9,9 +9,8 @@ class Ray:
         self.direction = direction
         self.point = point
         self.max_steps = 25
-        self.ideal = (point[0]+(direction[0]*spd)*self.max_steps,
-                      point[0]+(direction[1]*spd)*self.max_steps,
-                      point[0]+(direction[2]*spd)*self.max_steps)
+        self.collided_obj = None
+        self.is_collided = False
 
     def _add_points(pnt1, pnt2):
         return (pnt1[0] + pnt2[0], pnt1[1] + pnt2[1], pnt1[1] + pnt2[1])
@@ -32,8 +31,9 @@ class Ray:
             for obj in self.objects:
                 if obj.is_collide(self.point):
                     spd = self._get_valide_length(obj)
+                    self.collided_obj = obj
+            if spd < self.spd:
+                self.is_collided = True
+                break
 
             self.point = (self.point[0] + self.direction[0]*spd, self.point[1] + self.direction[1]*spd, self.point[2] + self.direction[2]*spd)
-
-    def is_not_collided(self):
-        return self.point == self.idel

@@ -6,37 +6,27 @@ from ray import Ray
 from math import cos, sin
 
 class Marcher3D:
-    def __init__(self, size=(1280, 720), background_color=(33, 33, 33)):
+    def __init__(self, size=(256, 256), background_color=(33, 33, 33)):
         self.screen = Image.new('RGBA', size, background_color)
         self.size = size
+        self.hsize = (size[0]//2, size[1]//2)
         self.objects = [
-            Obj.sphere((0, 0, 64))
+            Obj.sphere((0.0, 0.0, -64.0), 1.0, (222, 77, 222)),
+            Obj.sphere((5.0, 0.0, -64.0), 1.0, (77, 77, 222)),
+            Obj.sphere((4.0, -4.0, -64.0), 1.0, (222, 77, 77)),
         ]
-        self.fov = 10
 
-    def _frange(frm, to, step):
-        if frm > to:
-            while frm > to:
-                yield round(frm, 5)
-                frm += step
-        else:
-            while frm < to:
-                yield round(frm, 5)
-                frm += step
-
-
-    def look_at(self, eye_point=(0, 0, 0), eye_angle=(0, 0, 0)):
-        steps = ((self.size[0]/self.fov)/self.fov,
-                 (self.size[1]/self.fov)/self.fov)
-
-        for angle_x in Marcher3D._frange(0, self.fov, steps[0]):
-            for angle_y in Marcher3D._frange(0, self.fov, steps[1]):
-                direction = (sin(angle_x)+eye_angle[0],  # X
-                             sin(angle_x)+eye_angle[1],  # Y
-                             cos(angle_y)+eye_angle[2])  # Z
-                ray = Ray(point=eye_point, direction=direction, spd=50.0, objects=self.objects)
+    def look_at(self, camera=(0, 0, -60.0)):
+        for y in range(self.size[1]):
+            for x in range(self.size[0]):
+                direction = Obj._normalize(
+                    (self.hsize[0] - x + camera[0], self.hsize[1] - y + camera[1], 0 + camera[2])
+                )
+                ray = Ray(point=camera, direction=direction, objects=self.objects)
                 ray.calculate()
-                print(ray.point, direction)
+                if ray.is_collided:
+                    self.screen.putpixel((x, y), ray.collided_obj.albedo_color)
+        self.screen.show()
 
 
 if __name__ == '__main__':

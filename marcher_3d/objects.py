@@ -7,11 +7,12 @@ class ObjType:
 
 
 class Obj:
-    def sphere(point=(0, 0, 0), radius=32.0):
+    def sphere(point=(0, 0, 0), radius=32.0, albedo_color=(0, 0, 0)):
         obj = Obj()
         obj.objtype = ObjType.SPHERE
         obj.point = point
         obj.radius = radius
+        obj.albedo_color = albedo_color
         return obj
 
     def is_collide(self, point):
