@@ -5,7 +5,7 @@ from ray import Ray
 
 
 class Marcher3D:
-    def __init__(self, size=(480, 360), background_color=(33, 33, 33)):
+    def __init__(self, size=(720, 480), background_color=(33, 33, 33)):
         self.screen = Image.new('RGB', size, background_color)
         self.draw = ImageDraw.Draw(self.screen, 'RGBA')
         self.size = size
@@ -13,13 +13,15 @@ class Marcher3D:
         self.ratio = size[1]/size[0]
         self.fov = (size[0]+size[1])*self.ratio
         self.objects = [
-            Obj.sphere((0.0, 0.0, -self.fov-5.0), 1.0, (77, 222, 77, 255)),
-            Obj.sphere((-4.0, -1.0, -self.fov-16.0), 8.0, (222, 77, 77, 255)),
-            Obj.sphere((-1.0, 1.0, -self.fov-7.0), 1.0, (77, 77, 222, 255)),
+            Obj.cube((-5.0, -4.0, -self.fov-15.0), (5.0, 5.0, 10.0), (222, 77, 77, 255)),
+            Obj.cube((-4.0, 2.0, -self.fov-30.0), (3, 5, 20), (222, 122, 77, 255)),
+            # Obj.sphere((0.0, 0.0, -self.fov-5.0), 1.0, (77, 222, 77, 255)),
+            # Obj.sphere((-4.0, -1.0, -self.fov-16.0), 8.0, (222, 77, 77, 255)),
+            # Obj.sphere((-1.0, 1.0, -self.fov-7.0), 1.0, (77, 77, 222, 255)),
             Obj.sphere((0.5, -0.5, -self.fov-2.0), 0.7, (222, 77, 222, 255)),
         ]
 
-    def look_at(self, camera=(0, 0, 0), light_from=(0.3, 0.2, -0.5)):
+    def look_at(self, camera=(0.0, 0, 0), light_from=(0.3, 0.2, -0.5)):
         """
         Get look from camera point.
         """
@@ -37,6 +39,7 @@ class Marcher3D:
                     self.draw.point((x, y), ray.bright_color)
                     self.draw.point((x, y), ray.distance_color)
         self.screen.show()
+        self.screen.save('output.png')
 
 
 if __name__ == '__main__':

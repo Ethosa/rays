@@ -3,14 +3,15 @@ from objects import ObjType, Obj
 
 
 class Ray:
-    def __init__(self, point=(0, 0, 0), direction=(0, 0, 0), spd=1.0, objects=[], max_steps=25, light_direction=(0, 0, 0)):
+    def __init__(self, point=(0, 0, 0), direction=(0, 0, 0), spd=0.5, objects=[], max_steps=25, light_direction=(0, 0, 0)):
         self.objects = objects
         self.spd = spd
         self.direction = direction
         self.point = point
-        self.max_steps = 25
+        self.max_steps = 100
         self.shade_color = (0, 0, 0, 0)
         self.bright_color = (255, 255, 255, 0)
+        self.distance_color = (0, 0, 0, 0)
         self.collided_obj = None
         self.light_direction = light_direction
         self.camera = point
@@ -24,7 +25,7 @@ class Ray:
 
     def _get_valide_length(self, obj):
         length = Obj._distance(obj.point, self.point)-1.0
-        while obj.is_collide(Ray._add_num_to_point(Ray._add_points(self.point,self.direction), length)) and length > 0.1:
+        while obj.is_collide(Ray._add_num_to_point(Ray._add_points(self.point, self.direction), length)) and length > 0.1:
             length /= 2.0
         return length
 
@@ -44,9 +45,9 @@ class Ray:
         
         # Calculate shade, bright and distance colors
         if self.collided_obj:
+            alpha = round(Obj._distance(self.point, self.camera) / self.max_distance * 255)
+            self.distance_color = (0, 0, 0, alpha)
             alpha = round((Obj._distance(self.light_direction, self.direction))*255)
             self.shade_color = (0, 0, 0, alpha)
             alpha = round((0.5-Obj._distance(self.light_direction, self.direction))*255)
             self.bright_color = (255, 255, 255, round(alpha*0.1))
-            alpha = round(Obj._distance(self.point, self.camera) / self.max_distance * 255)
-            self.distance_color = (0, 0, 0, alpha)
