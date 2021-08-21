@@ -3,7 +3,6 @@ from PIL import Image, ImageDraw
 from objects import Obj, ObjType
 from ray import Ray
 
-from math import cos, sin
 
 class Marcher3D:
     def __init__(self, size=(480, 360), background_color=(33, 33, 33)):
@@ -15,8 +14,8 @@ class Marcher3D:
         self.fov = (size[0]+size[1])*self.ratio
         self.objects = [
             Obj.sphere((0.0, 0.0, -self.fov-5.0), 1.0, (77, 222, 77, 255)),
-            Obj.sphere((-4.0, -1.0, -self.fov-16.0), 10.0, (222, 77, 77, 255)),
-            Obj.sphere((2.0, 1.5, -self.fov-8.0), 1.0, (77, 77, 222, 255)),
+            Obj.sphere((-4.0, -1.0, -self.fov-16.0), 8.0, (222, 77, 77, 255)),
+            Obj.sphere((-1.0, 1.0, -self.fov-7.0), 1.0, (77, 77, 222, 255)),
             Obj.sphere((0.5, -0.5, -self.fov-2.0), 0.7, (222, 77, 222, 255)),
         ]
 
@@ -32,7 +31,7 @@ class Marcher3D:
                 )
                 ray = Ray(point=camera, direction=direction, objects=self.objects, light_direction=light_from)
                 ray.calculate()
-                if ray.is_collided:
+                if ray.collided_obj:
                     self.draw.point((x, y), ray.collided_obj.albedo_color)
                     self.draw.point((x, y), ray.shade_color)
                     self.draw.point((x, y), ray.bright_color)
